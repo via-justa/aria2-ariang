@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+caddy run --config /usr/local/caddy/Caddyfile --adapter=caddyfile

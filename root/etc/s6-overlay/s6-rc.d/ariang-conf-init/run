@@ -1,0 +1,28 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+ariang_js_path=/usr/local/www/ariang/js/aria-ng*.js
+
+if [ -n "$RPC_SECRET" ]; then
+    if [ -n "$EMBED_RPC_SECRET" ]; then
+        echo "Embedding RPC secret into ariang Web UI"
+        RPC_SECRET_BASE64=$(echo -n "${RPC_SECRET}" | base64 -w 0)
+        sed -i 's,secret:"[^"]*",secret:"'"${RPC_SECRET_BASE64}"'",g' $ariang_js_path
+    fi
+fi
+
+if [ -n "$BASIC_AUTH_USERNAME" ] && [ -n "$BASIC_AUTH_PASSWORD" ]; then
+    echo "Enabling caddy basic auth"
+    echo "
+        basicauth / {
+            $BASIC_AUTH_USERNAME $(caddy hash-password -plaintext "${BASIC_AUTH_PASSWORD}")
+        }
+    " >>/usr/local/caddy/Caddyfile
+fi
+
+if [[ -n "$ARIA2RPCPORT" ]]; then
+    echo "Changing rpc request port to $ARIA2RPCPORT"
+    sed -i "s/6800/${ARIA2RPCPORT}/g" $ariang_js_path
+fi
+
+caddy fmt /usr/local/caddy/Caddyfile --overwrite

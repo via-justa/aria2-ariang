@@ -1,0 +1,24 @@
+services:
+    aria2:
+        image: aria2ng
+        container_name: aria2
+        deploy:
+            resources:
+                limits:
+                    cpus: "0.5"
+                    memory: "300M"
+        environment:
+            RPC_SECRET: yhjfibyduygdiknbdinudigcutru
+            PUID: 1000
+            PGID: 100
+            TZ: Europe/Berlin
+            EMBED_RPC_SECRET: true
+            ARIA2RPCPORT: 6800
+        # volumes:
+        #     - /share/Container/volumes/arrstack/aria2/config:/aria2/conf
+        #     - /share/Data/downloads/rdtclient:/data/downloads/rdtclient
+        # network_mode: service:gluetun
+        restart: unless-stopped
+        ports:
+            - 8080:8080
+            - 6800:6800
