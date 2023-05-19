@@ -4,15 +4,25 @@ FROM ghcr.io/linuxserver/baseimage-alpine:3.17
 
 ARG BUILD_DATE
 ARG GITHUB_SHA
+ARG ARIANG_VERSION=1.3.6
 
-ENV BUILD_DATE=$BUILD_DATE
-ENV GITHUB_SHA=$GITHUB_SHA
+LABEL maintainer="via-justa" \
+    org.label-schema.build-date=$BUILD_DATE \
+    org.label-schema.name="aria2-ariang" \
+    org.label-schema.description="Aria2 downloader and AriaNg web UI Docker image based on linuxserver.io" \
+    org.label-schema.version=$ARIANG_VERSION \
+    org.label-schema.url="https://github.com/via-justa/aria2-ariang" \
+    org.label-schema.license="MIT" \
+    org.label-schema.vcs-ref=$GITHUB_SHA \
+    org.label-schema.vcs-url="https://github.com/via-justa/aria2-ariang" \
+    org.label-schema.vcs-type="Git" \
+    org.label-schema.vendor="via-justa" \
+    org.label-schema.schema-version="1.0"
 
 # bt trackers from https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best_ip.txt
 # Project url: https://github.com/ngosang/trackerslist
 ENV TRACKERS="$(curl -s https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best_ip.txt | tr '\n\n' ',')"
 
-ARG ARIANG_VERSION=1.3.6
 
 ADD https://github.com/mayswind/AriaNg/releases/download/${ARIANG_VERSION}/AriaNg-${ARIANG_VERSION}.zip /usr/local/www/ariang/ariang.zip
 
