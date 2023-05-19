@@ -25,7 +25,7 @@ docker run -d \
     -e PUID=1000 \
     -e PGID=1000 \
     -e RPC_SECRET=SOMESECRETSTRING \
-    ghcr.io/via-justa/aria2-ariang
+    viajusta/aria2-ariang
 ```
 
 ### docker-compose
@@ -37,7 +37,7 @@ version: "3"
 
 services:
   ariang:
-    image: hurlenko/aria2-ariang
+    image: viajusta/aria2-ariang
     ports:
       - 8080:8080
     volumes:
